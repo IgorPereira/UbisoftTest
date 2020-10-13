@@ -1,53 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class GameSession
+﻿namespace UbisoftTest
 {
-	private static GameSession instance;
-	public static GameSession Instance
+	public class GameSession
 	{
-		get
+		private static GameSession instance;
+		public static GameSession Instance
 		{
-			if (instance == null)
-				instance = new GameSession();
+			get
+			{
+				if (instance == null)
+					instance = new GameSession();
 
-			return instance;
+				return instance;
+			}
 		}
-	}
 
-	private IDataSaver dataSaver;
+		private IDataSaver dataSaver;
 
-    public ObservableProperty<string> TextValue { get; private set; }
+		public ObservableProperty<string> TextValue { get; private set; }
 
-	private GameSession()
-	{
-		TextValue = new ObservableProperty<string>("");
+		private GameSession()
+		{
+			TextValue = new ObservableProperty<string>("");
 
-		dataSaver = new LocalDataSaver();
-	}
+			dataSaver = new LocalDataSaver();
+		}
 
 
-	public void LoadSession()
-	{
-		dataSaver.LoadData(OnDataLoadedHandler);
-	}
+		public void LoadSession()
+		{
+			dataSaver.LoadData(OnDataLoadedHandler);
+		}
 
-	public void SaveSession()
-	{
-		GameSaveData dataToSave = new GameSaveData(TextValue.Value);
-		dataSaver.SaveData(dataToSave);
-	}
+		public void SaveSession()
+		{
+			GameSaveData dataToSave = new GameSaveData(TextValue.Value);
+			dataSaver.SaveData(dataToSave);
+		}
 
-	public void ResetSession(bool autosave)
-	{
-		TextValue.Value = "";
+		public void ResetSession(bool autosave)
+		{
+			TextValue.Value = "";
 
-		if (autosave) SaveSession();
-	}
+			if (autosave) SaveSession();
+		}
 
-	private void OnDataLoadedHandler(GameSaveData savedData)
-	{
-		TextValue.Value = savedData.Value;
+		private void OnDataLoadedHandler(GameSaveData savedData)
+		{
+			TextValue.Value = savedData.Value;
+		}
 	}
 }

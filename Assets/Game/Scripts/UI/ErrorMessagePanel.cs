@@ -1,50 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ErrorMessagePanel : MonoBehaviour
+namespace UbisoftTest
 {
-	const string overflowTextError = "Your text is over the max length!";
-	const string invalidTextError = "Your text contains invalid characters!";
-
-	[SerializeField]
-	ParametrizedInputField parametrizedInputField;
-
-	[SerializeField]
-	Image errorIcon;
-    [SerializeField]
-    TextMeshProUGUI errorText;
-
-	private void Awake()
+	public class ErrorMessagePanel : MonoBehaviour
 	{
-		parametrizedInputField.OnStateChanged += OnStateChangedHandler;
+		private const string overflowTextError = "Your text is over the max length!";
+		private const string invalidTextError = "Your text contains invalid characters!";
 
-		this.gameObject.SetActive(false);
-	}
+		[SerializeField]
+		private ParametrizedInputField parametrizedInputField;
 
-	private void OnStateChangedHandler(INPUT_FIELD_STATES newState)
-	{
-		bool hasError = newState != INPUT_FIELD_STATES.NONE;
+		[SerializeField]
+		private Image errorIcon;
+		[SerializeField]
+		private TextMeshProUGUI errorText;
 
-		this.gameObject.SetActive(hasError);
+		private void Awake()
+		{
+			parametrizedInputField.InputState.OnPropertyChangedWithValue += OnStateChangedHandler;
 
-		if (hasError)
-			ShowErrorTextByType(newState);
-	}
+			gameObject.SetActive(false);
+		}
 
-	private void ShowErrorTextByType(INPUT_FIELD_STATES state)
-	{
-		StringBuilder builder = new StringBuilder();
+		private void OnStateChangedHandler(INPUT_FIELD_STATES newState)
+		{
+			bool hasError = newState != INPUT_FIELD_STATES.NONE;
 
-		if ((state & INPUT_FIELD_STATES.OVERFLOW) == INPUT_FIELD_STATES.OVERFLOW)
-			builder.AppendLine(overflowTextError);
+			gameObject.SetActive(hasError);
 
-		if ((state & INPUT_FIELD_STATES.INVALID) == INPUT_FIELD_STATES.INVALID)
-			builder.AppendLine(invalidTextError);
+			if (hasError)
+				ShowErrorTextByType(newState);
+		}
 
-		errorText.text = builder.ToString();
+		private void ShowErrorTextByType(INPUT_FIELD_STATES state)
+		{
+			StringBuilder builder = new StringBuilder();
+
+			if ((state & INPUT_FIELD_STATES.OVERFLOW) == INPUT_FIELD_STATES.OVERFLOW)
+				builder.AppendLine(overflowTextError);
+
+			if ((state & INPUT_FIELD_STATES.INVALID) == INPUT_FIELD_STATES.INVALID)
+				builder.AppendLine(invalidTextError);
+
+			errorText.text = builder.ToString();
+		}
 	}
 }

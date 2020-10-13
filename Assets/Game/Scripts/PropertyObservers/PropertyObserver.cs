@@ -1,37 +1,38 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PropertyObserver<T> : MonoBehaviour where T : IEquatable<T>
+namespace UbisoftTest
 {
-    private ObservableProperty<T> observedProperty;
-    public ObservableProperty<T> ObservedProperty
+	public class PropertyObserver<T> : MonoBehaviour where T : IEquatable<T>
 	{
-		get { return observedProperty; }
-		set
+		private ObservableProperty<T> observedProperty;
+		public ObservableProperty<T> ObservedProperty
 		{
-			if (observedProperty == value) return;
-
-			if(observedProperty != null)
+			get { return observedProperty; }
+			set
 			{
-				observedProperty.OnPropertyChanged -= OnPropertyChangedHandler;
-				observedProperty.OnPropertyChangedWithValue -= OnPropertyChangedWithValueHandler;
-			}
+				if (observedProperty == value) return;
 
-			observedProperty = value;
+				if (observedProperty != null)
+				{
+					observedProperty.OnPropertyChanged -= OnPropertyChangedHandler;
+					observedProperty.OnPropertyChangedWithValue -= OnPropertyChangedWithValueHandler;
+				}
 
-			if(observedProperty != null)
-			{
-				observedProperty.OnPropertyChanged += OnPropertyChangedHandler;
-				observedProperty.OnPropertyChangedWithValue += OnPropertyChangedWithValueHandler;
+				observedProperty = value;
 
-				OnPropertyChangedHandler();
-				OnPropertyChangedWithValueHandler(observedProperty.Value);
+				if (observedProperty != null)
+				{
+					observedProperty.OnPropertyChanged += OnPropertyChangedHandler;
+					observedProperty.OnPropertyChangedWithValue += OnPropertyChangedWithValueHandler;
+
+					OnPropertyChangedHandler();
+					OnPropertyChangedWithValueHandler(observedProperty.Value);
+				}
 			}
 		}
-	}
 
-	protected virtual void OnPropertyChangedHandler() { }
-	protected virtual void OnPropertyChangedWithValueHandler(T newValue) { }
+		protected virtual void OnPropertyChangedHandler() { }
+		protected virtual void OnPropertyChangedWithValueHandler(T newValue) { }
+	}
 }

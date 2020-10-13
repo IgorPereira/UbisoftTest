@@ -1,22 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class StringTextObserver : PropertyObserver<string>
+namespace UbisoftTest
 {
-	TextMeshProUGUI txtValue;
-
-	private void OnValidate()
+	[RequireComponent(typeof(TextMeshProUGUI))]
+	public class StringTextObserver : PropertyObserver<string>
 	{
-		txtValue = this.GetComponent<TextMeshProUGUI>();
-	}
+		private TextMeshProUGUI txtValue;
 
-	protected override void OnPropertyChangedWithValueHandler(string newValue)
-	{
-		base.OnPropertyChangedWithValueHandler(newValue);
+		private void OnValidate()
+		{
+			txtValue = GetComponent<TextMeshProUGUI>();
+		}
 
-		txtValue.text = newValue;
+		protected override void OnPropertyChangedWithValueHandler(string newValue)
+		{
+			base.OnPropertyChangedWithValueHandler(newValue);
+
+			txtValue.text = newValue;
+		}
 	}
 }

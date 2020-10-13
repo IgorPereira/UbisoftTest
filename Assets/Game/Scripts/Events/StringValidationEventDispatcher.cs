@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public enum VALIDATION_ERROR_TYPES { NONE, OVERFLOW, INVALID_CHARACTER }
-
-public class ValidationErrorArgs : EventArgs
+namespace UbisoftTest
 {
-    public VALIDATION_ERROR_TYPES type;
-    public char invalidCharacter;
-}
+	public enum VALIDATION_ERROR_TYPES { NONE, OVERFLOW, INVALID_CHARACTER }
 
-public class StringValidationEventDispatcher : EventDispatcher<VALIDATION_ERROR_TYPES, ValidationErrorArgs>
-{
+    public class ValidationErrorArgs : EventArgs
+    {
+        public VALIDATION_ERROR_TYPES type;
+        public char invalidCharacter;
+    }
 
+    public class StringValidationEventDispatcher : EventDispatcher<VALIDATION_ERROR_TYPES, ValidationErrorArgs>
+    {
+
+    }
 }

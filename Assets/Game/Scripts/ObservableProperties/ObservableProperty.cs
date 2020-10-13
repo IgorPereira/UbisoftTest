@@ -1,37 +1,36 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
 
-public class ObservableProperty<T> where T : IEquatable<T>
+namespace UbisoftTest
 {
-	public event Action OnPropertyChanged;
-	public event Action<T> OnPropertyChangedWithValue;
-
-	private T _value;
-	public T Value
+	public class ObservableProperty<T>
 	{
-		get { return _value; }
-		set
-		{
-			if (!_value.Equals(value))
-			{
-				_value = value;
+		public event Action OnPropertyChanged;
+		public event Action<T> OnPropertyChangedWithValue;
 
-				OnPropertyChanged?.Invoke();
-				OnPropertyChangedWithValue?.Invoke(_value);
+		private T _value;
+		public T Value
+		{
+			get { return _value; }
+			set
+			{
+				if (!_value.Equals(value))
+				{
+					_value = value;
+
+					OnPropertyChanged?.Invoke();
+					OnPropertyChangedWithValue?.Invoke(_value);
+				}
 			}
 		}
-	}
 
-	public ObservableProperty(T startValue)
-	{
-		_value = startValue;
-	}
+		public ObservableProperty(T startValue)
+		{
+			_value = startValue;
+		}
 
-	public ObservableProperty()
-	{
-		_value = default;
+		public ObservableProperty()
+		{
+			_value = default;
+		}
 	}
 }

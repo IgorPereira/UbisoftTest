@@ -1,28 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class ToggleButtonByInputError : MonoBehaviour
+namespace UbisoftTest
 {
-	[SerializeField]
-	ParametrizedInputField parametrizedInputField;
-
-	Button btn;
-
-	private void OnValidate()
+	[RequireComponent(typeof(Button))]
+	public class ToggleButtonByInputError : MonoBehaviour
 	{
-		btn = this.GetComponent<Button>();
-	}
+		[SerializeField]
+		private ParametrizedInputField parametrizedInputField;
 
-	private void Awake()
-	{
-		parametrizedInputField.OnStateChanged += OnStateChangedHandler;
-	}
+		private Button btn;
 
-	private void OnStateChangedHandler(INPUT_FIELD_STATES state)
-	{
-		btn.interactable = state == INPUT_FIELD_STATES.NONE;
+		private void OnValidate()
+		{
+			btn = GetComponent<Button>();
+		}
+
+		private void Awake()
+		{
+			parametrizedInputField.InputState.OnPropertyChangedWithValue += OnStateChangedHandler;
+		}
+
+		private void OnStateChangedHandler(INPUT_FIELD_STATES state)
+		{
+			btn.interactable = state == INPUT_FIELD_STATES.NONE;
+		}
 	}
 }

@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public struct GameSaveData
+﻿namespace UbisoftTest
 {
-    public string Value;
-
-    public GameSaveData(string value)
+	public struct GameSaveData
 	{
-		this.Value = value;
+		public string Value;
+
+		public GameSaveData(string value)
+		{
+			Value = value;
+		}
 	}
 }

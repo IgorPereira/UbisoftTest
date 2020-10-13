@@ -1,49 +1,53 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 
-public class LocalDataSaver : IDataSaver
+namespace UbisoftTest
 {
-	private const string folderName = "GameSaveData";
-	private const string filename = "SaveData.txt";
-
-	private readonly string directoryPath;
-	private readonly string fullPath;
-
-	public LocalDataSaver()
+	public class LocalDataSaver : IDataSaver
 	{
-		directoryPath = Path.Combine(Application.persistentDataPath, folderName);
-		fullPath = Path.Combine(Application.persistentDataPath, folderName, filename);
-	}
-	public void SaveData(GameSaveData saveData)
-	{
-		CreateDirectoryIfNeeded();
+		private const string folderName = "GameSaveData";
+		private const string filename = "SaveData.txt";
 
-		string fileContents = JsonUtility.ToJson(saveData);
+		private readonly string directoryPath;
+		private readonly string fullPath;
 
-		File.WriteAllText(fullPath, fileContents);
-	}
+		public LocalDataSaver()
+		{
+			directoryPath = Path.Combine(Application.persistentDataPath, folderName);
+			fullPath = Path.Combine(Application.persistentDataPath, folderName, filename);
+		}
 
-	public void LoadData(System.Action<GameSaveData> OnLoadCompleted)
-	{
-		string fileContents = null;
+		public void SaveData(GameSaveData saveData)
+		{
+			CreateDirectoryIfNeeded();
 
-		if (File.Exists(fullPath))
-			fileContents = File.ReadAllText(fullPath);
+			string fileContents = JsonUtility.ToJson(saveData);
 
-		GameSaveData saveData;
-		if (!string.IsNullOrEmpty(fileContents))
-			saveData = JsonUtility.FromJson<GameSaveData>(fileContents);
-		else
-			saveData = new GameSaveData();
+			File.WriteAllText(fullPath, fileContents);
+		}
 
-		OnLoadCompleted?.Invoke(saveData);
-	}
+		public void LoadData(System.Action<GameSaveData> OnLoadCompleted)
+		{
+			CreateDirectoryIfNeeded();
 
-	private void CreateDirectoryIfNeeded()
-	{
-		if (!Directory.Exists(directoryPath))
-			Directory.CreateDirectory(directoryPath);
+			string fileContents = null;
+
+			if (File.Exists(fullPath))
+				fileContents = File.ReadAllText(fullPath);
+
+			GameSaveData saveData;
+			if (!string.IsNullOrEmpty(fileContents))
+				saveData = JsonUtility.FromJson<GameSaveData>(fileContents);
+			else
+				saveData = new GameSaveData() { Value = "" };
+
+			OnLoadCompleted?.Invoke(saveData);
+		}
+
+		private void CreateDirectoryIfNeeded()
+		{
+			if (!Directory.Exists(directoryPath))
+				Directory.CreateDirectory(directoryPath);
+		}
 	}
 }
